@@ -1,0 +1,185 @@
+# TODO: Make appropriate fields nullable, figure out why
+# adding facility returns error, add total vote weight
+
+from django.db import models
+from score.models import Score
+from graticule.models import Graticule
+
+# Create your models here.
+class Facility(models.Model):
+    pub_date = models.DateTimeField('Date published') # date of first creation #
+
+    SU_BATHROOM = "Single-user bathroom"
+    MU_BATHROOM = "Multi-user bathroom"
+    ELEVATOR = "Elevator"
+    PATH = "Path or shortcut"
+    LOC_TYPE_CHOICES = [
+        (SU_BATHROOM, "Single-user bathroom"),
+        (MU_BATHROOM, "Multi-user bathroom"),
+        (ELEVATOR, "Elevator"),
+        (PATH, "Path or shortcut"),
+        ]
+
+    loc_name = models.CharField( #
+        'Location name', max_length=50)
+    loc_type = models.CharField( #
+        'Location type', max_length=50,
+        choices=LOC_TYPE_CHOICES, default=SU_BATHROOM)
+    building_code_url = 'http://registrar.uchicago.edu/page/building-abbreviations-addresses'
+    building_code_help_text = 'Use building codes at \
+<a href="' + building_code_url + '">' + building_code_url + '</a>, or OTHER.'
+    loc_desc = models.CharField( #
+        'Location description', max_length=500,
+        help_text="Describe the location of the facility and how to get there.")
+    # Location description.
+    building_code = models.CharField( #
+        'Building code', max_length=20,
+        help_text=building_code_help_text)
+    # use building code or OTHER
+
+    coords = models.ForeignKey(Graticule) #
+    # Default latitude is = 41.789569, default longitude is -87.599654.
+    # To change this, go to graticule.models and change default values
+    # for Graticule.lon and Graticule.lat.
+
+    # Don't mess with these next lines
+    #ASPECT_1 = models.ForeignKey(Score, related_name='#ASPECT_2_id')
+    #ASPECT_1 = models.ForeignKey(Score, related_name='#ASPECT_2_id')
+    #ASPECT_1 = models.ForeignKey(Score, related_name='#ASPECT_2_id')
+    #ASPECT_1 = models.ForeignKey(Score, related_name='#ASPECT_2_id')
+    #ASPECT_1 = models.ForeignKey(Score, related_name='#ASPECT_2_id')
+    #ASPECT_1 = models.ForeignKey(Score, related_name='#ASPECT_2_id')
+    #ASPECT_1 = models.ForeignKey(Score, related_name='#ASPECT_2_id')
+    # Need to explain this
+
+    score_fields = [
+        #ASPECT_4_id,
+        #ASPECT_4_id,
+        #ASPECT_4_id,
+        #ASPECT_4_id,
+        #ASPECT_4_id,
+        #ASPECT_4_id,
+        #ASPECT_4_id,
+        ]
+    # Trans*-friendly, accessible, well-maintained, overall exp.
+    decay_increment = 604800
+    decay_factor = 0.99
+    # Once a week.
+
+    # def prepare(self):
+    #     for aspect in self.score_fields:
+    #         print aspect
+    #         vars(self)[aspect] = models.ForeignKey(
+    #             Score, related_name=aspect+'_rn',)
+    #         vars(self)[aspect]=Score(
+    #             total_votes=0,
+    #             total_weight=0,
+    #             weight_update_incr = self.decay_increment,
+    #             weight_decay_param = self.decay_factor,
+    #             score = 0)
+    #     return self
+
+     # for aspect in score_fields:
+     #    vars()[aspect] = models.ForeignKey(
+     #        Score, related_name=aspect+'_rn',)
+     #    vars()[aspect]=Score(
+     #        total_votes=0,
+     #        total_weight=0,
+     #        weight_update_incr = decay_increment,
+     #        weight_decay_param = decay_factor,
+     #        score = 0)
+     #    print aspect
+        
+    # for some reason this returns a nonetype, which probably
+    # means Facility() is not being instantiated with each
+    # x_id being set equal to some non-null Score object.
+
+            
+    # Makes variables upon class instantiation, ForeignKeys to
+    # Score objects with related name <aspect>_rn.
+    valid_scores = (1, 2, 3)
+    # <score>.score must be in valid_scores to be counted as a score.
+
+    def __unicode__(self):
+        return self.loc_name
+
+    def is_bathroom(self):
+        return self.loc_type in (self.SU_BATHROOM, self.MU_BATHROOM, )
+
+    def is_su_bathroom(self):
+        return self.loc_type in (self.SU_BATHROOM, )
+
+    def add_review(self, review):
+        '''Registers Review with the Facility.'''
+        # There's nothing we have to do to the self object here,
+        # since key is from Review to Facility. We can also update
+        # the tags via the Tag method.
+        # UNCOMMENT THE FOLLOWING EVENTUALLY
+        # review.save()
+
+        for aspect in self.score_fields:
+            vars(self)[aspect].update_score(
+                vote=vars(review)[aspect+'_vote'],
+                valid_scores=self.valid_scores,
+                empty_ok=True)
+
+    def remove_review(self, review):
+        '''Removes Review from the Facility.'''
+        for aspect in self.score_fields:
+            vars(self)[aspect].remove_score(
+                vars(review)[aspect+'_vote'],
+                review.pub_date)
+
+        review.delete()
+
+
+
+class Bathroom(Facility):
+    gender_type = models.CharField(max_length=5) # M, W, A, etc?
+
+class Tag(models.Model):
+    tag = models.CharField(max_length=50, unique = True)
+    # tag content
+    facilities = models.ManyToManyField(Facility)
+
+class Bad(Tag):
+    pass
+
+class Good(Tag):
+    pass
+
+class Review(models.Model):
+    pub_date = models.DateTimeField() # Publication date.
+    facility = models.ForeignKey('Facility') # foreign key to Facility
+    user = models.ForeignKey('User') # foreign key to user
+    title = models.CharField(max_length=50) # review title
+
+    karma = models.ForeignKey(Score, related_name='review_karma')
+    # Score, determined by +/-, like Reddit post karma
+
+    # All *_vote are votes valued 1, 2, or 3.
+    #ASPECT_3_vote = models.IntegerField()
+    #ASPECT_3_vote = models.IntegerField()
+    #ASPECT_3_vote = models.IntegerField()
+    #ASPECT_3_vote = models.IntegerField()
+    #ASPECT_3_vote = models.IntegerField()
+    #ASPECT_3_vote = models.IntegerField()
+    #ASPECT_3_vote = models.IntegerField()
+
+    bads = models.ManyToManyField(Bad, verbose_name='Warnings')
+    goods = models.ManyToManyField(Good, verbose_name='Features')
+
+    body = models.TextField() # Review body text.
+
+class User(models.Model):
+    creation_date = models.DateTimeField()
+    nick = models.CharField(max_length=20, unique = True)
+    real_name = models.CharField(max_length=120)
+
+    points = models.ForeignKey(Score)
+    
+    facilities = models.ManyToManyField(Facility)
+
+class Alert(models.Model):
+    title = models.Charfield(max_length = 50)
+    body = models.Textfield()

@@ -1,0 +1,13 @@
+<html>
+
+<head>
+	<title>Thanks for your input!</title>
+</head>
+<body>
+<!-- ERROR MESSAGE HERE -->
+
+Thanks for sharing!<br />
+
+<a href="..">Return to the main page</a>
+</body>
+</html>

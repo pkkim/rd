@@ -1,0 +1,12 @@
+<div id="top-left">
+{% if facility.id %}<a href="facility_new_review">Add a review!</a> &bull;{% endif %}
+{% if False %}<a href="account-path-in">Log in!{% else %}<a href="account-path-out">See my account{% endif %}</a><br /> My account link goes here
+{# Make the link say 'log in' or 'my account' based on whether user is logged in #}
+{% if facility.id %}<div id="map-canvas"></div>
+
+Trans*-friendly: {{ facility.tf.score }}<br />
+Accessible: {{ facility.accs.score }}<br />
+Well-maintained: {{ facility.maint.score }}<br />
+Overall: {{ facility.overall.score }} 
+{% endif %}
+</div>

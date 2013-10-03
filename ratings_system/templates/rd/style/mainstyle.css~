@@ -1,0 +1,78 @@
+body {
+font-family: Helvetica, Verdana
+}
+a {
+text-decoration: none
+}
+#main {
+width: 75%;
+}
+#top-left {
+padding: 5px 5px;
+position: absolute;
+top:0;
+right:0;
+width: 25%;
+align: right;
+height: 50%;
+}
+#map-canvas {
+width: 100%;
+height: 100%;
+}
+#tag-holder {
+width: 40%;
+float: left;
+overflow: hidden;
+}
+#feature-header, #warning-header, #features, #warnings {
+width: 50%;
+padding: 5px;
+border: 5px;
+box-sizing: border-box;
+ms-box-sizing: border-box;
+webkit-box-sizing: border-box;
+moz-box-sizing: border-box;
+}
+#feature-header {
+float: left;
+text-align: center;
+background-color: #8080ff;
+}
+#warning-header {
+float: right;
+text-align: center;
+background-color: #ff8080;
+}
+#content-holder{
+width: 100%;
+float: left;
+}
+#features {
+float: left;
+background-color: blue;
+height: relative;
+overflow: hidden;
+}
+#warnings {
+float: right;
+background-color: red;
+height: relative;
+overflow: hidden;
+}
+
+#feature-odd {
+background-color: #8080ff
+}
+#feature-even {
+}
+#warning-odd {
+background-color: #8080ff
+}
+#warning-even {
+}
+
+
+#reviews{
+float: left;
+}

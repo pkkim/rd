@@ -1,0 +1,24 @@
+from django.conf.urls import patterns, include, url
+from ratings_system import views
+
+urlpatterns = patterns(
+    '',
+    # Examples:
+    # url(r'^$', 'rd.views.home', name='home'),
+    # url(r'^rd/', include('rd.foo.urls')),
+
+    url(r'^(?P<style_sheet_name>.*)$',
+        views.style_view, name='facility_new_review'),
+    url(r'^(?P<gid>\d+)/(?P<html_name>facility\_posted)/',
+        views.facility_unary_view, name='facility_posted'),
+    url(r'^(?P<gid>\d+)/(?P<html_name>facility\_review\_error)/',
+        views.facility_unary_view, name='facility_review_error'),
+    # ^ this is the wrong way to do it, should pass error to fac_posted
+    url(r'^(?P<gid>\d+)/(?P<html_name>facility\_review\_detail)/',
+        views.facility_unary_view, name='facility\_review\_detail'),
+    url(r'^(?P<gid>\d+)/(?P<html_name>facility\_update)/',
+        views.facility_unary_view, name='facility_update'),
+
+    url(r'(?P<gid>\d+)/?$', views.facility_index,
+        name='facility_index'),
+)

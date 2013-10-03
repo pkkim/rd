@@ -1,0 +1,14 @@
+* /, index
+** /[0-9]+, facility detail
+*** /new_review, new review
+*** /posted, new review success
+*** /see_review, review detail
+*** /update, suggest revisions
+** /u, user
+*** /reviews, user's reviews
+*** /send_message, send user a message
+*** /submissions, user's submitted facilities
+** /search
+*** /results
+** /about
+** /

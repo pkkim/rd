@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title>Post a review for {{ facility.loc_name }}</title>
+
+<style>
+#rating: {
+float:left;
+}
+</style>
+</head>
+
+<form action="{% url 'ratings_system.views.facility_unary_view' facility.id 'facility_posted' %}" method="post">
+{% csrf_token %}
+
+<div id="rating">
+Facility review: What's good? What's bad? What should people watch out for?<br />
+	<textarea name="body" cols="75" rows="10"></textarea>
+</div>
+
+<div id="rating">
+Trans*-friendliness:<br />
+{% for i in facility.valid_scores %}
+<input type="radio" name="tf" id="choice{{i}}" value="{{i}}" />
+<label for="choice{{i}}">{{i}}</label>
+{% endfor %}
+</div>
+
+<div id="rating">
+Accessibility:<br />
+{% for i in facility.valid_scores %}
+<input type="radio" name="accs" id="choice{{i}}" value="{{i}}" />
+<label for="choice{{i}}">{{i}}</label>
+{% endfor %}
+</div>
+
+<div id="rating">
+State of maintenance:<br />
+{% for i in facility.valid_scores %}
+<input type="radio" name="maint" id="choice{{i}}" value="{{i}}" />
+<label for="choice{{i}}">{{i}}</label>
+{% endfor %}
+</div>
+
+<div id="rating">
+Overall rating:<br />
+{% for i in facility.valid_scores %}
+<input type="radio" name="overall" id="choice{{i}}" value="{{i}}" />
+<label for="choice{{i}}">{{i}}</label>
+{% endfor %}
+</div>
+
+<input type="submit" value="Vote" />
+
+</form>
+</html>
