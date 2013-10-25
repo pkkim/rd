@@ -1,7 +1,0 @@
-V Make a .css file and put everything in it, including a sidebar with info
-- Make the review submission actually post data to the database: working on it, see views.py
-- Make "report review" thing
-- Think about how to suggest status updates for facilities
-- Set up time to solicit suggestions at the next meeting
-- Make index view color points based on rating and criterion
-- Come up with system to fight trolls\n
