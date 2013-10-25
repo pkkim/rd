@@ -1,0 +1,17 @@
+from django.template import RequestContext, loader
+from django.db import models
+
+from ratings_system.models import *
+from graticule.models import *
+from score.models import *
+
+import datetime
+
+from django.utils import unittest
+from django.test import TestCase
+
+class FacilityTestCase(TestCase):
+    def setUp(self):
+        Facility.objects.create(
+            pub_date = datetime.datetime.today(),
+)

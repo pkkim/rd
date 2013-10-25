@@ -26,17 +26,17 @@ class ReviewAdmin(admin.ModelAdmin):
                             'bads', 'goods']})
 ]
 
-class UserAdmin(admin.ModelAdmin):
-            fieldsets = [
-                (None, {'fields': [
-                            'nick', 'real_name',
-                            'creation_date']}),
-                ('Record', {'fields': [
-                            'facilities', 'points']}),
-]
+# class CustomUserAdmin(admin.ModelAdmin):
+#             fieldsets = [
+#                 (None, {'fields': [
+#                             'nick', 'real_name',
+#                             'creation_date']}),
+#                 ('Record', {'fields': [
+#                             'facilities', 'points']}),
+# ]
 
 admin.site.register(Facility)
 admin.site.register(Review)
-admin.site.register(User)
+# admin.site.register(User)
 admin.site.register(Graticule)
 

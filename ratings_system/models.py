@@ -4,6 +4,7 @@
 from django.db import models
 from score.models import Score
 from graticule.models import Graticule
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Facility(models.Model):
@@ -32,8 +33,8 @@ class Facility(models.Model):
         'Location description', max_length=500,
         help_text="Describe the location of the facility and how to get there.")
     # Location description.
-    building_code = models.CharField( #
-        'Building code', max_length=20,
+    short_location = models.CharField( #
+        'Short location description', max_length=50,
         help_text=building_code_help_text)
     # use building code or OTHER
 
@@ -107,7 +108,7 @@ class Good(Tag):
 class Review(models.Model):
     pub_date = models.DateTimeField() # Publication date.
     facility = models.ForeignKey('Facility') # foreign key to Facility
-    user = models.ForeignKey('User') # foreign key to user
+    user = models.ForeignKey('CustomUser') # foreign key to user
     title = models.CharField(max_length=50) # review title
 
     karma = models.ForeignKey(Score, related_name='review_karma')
@@ -127,11 +128,9 @@ class Review(models.Model):
 
     body = models.TextField() # Review body text.
 
-class User(models.Model):
-    creation_date = models.DateTimeField()
-    nick = models.CharField(max_length=20, unique = True)
-    real_name = models.CharField(max_length=120)
-
+class CustomUser(User):
     points = models.ForeignKey(Score)
-    
     facilities = models.ManyToManyField(Facility)
+
+    def __unicode__(self):
+        return str(self.id) + ", " + self.user.username

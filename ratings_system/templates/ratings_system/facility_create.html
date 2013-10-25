@@ -1,0 +1,24 @@
+<html>
+<head>
+
+<link rel="stylesheet" type="text/css" href="/style/mainstyle.css">
+
+
+
+</head>
+<body>
+{% include "rd/sidebar.html" %}
+
+<div id="main">
+
+<h1><!-- {{ facility }} -->
+{{ facility.loc_name }}
+</h1>
+<h2>{{ facility.loc_type }}</h2>
+
+<div id="desc">
+{{ facility.loc_desc }}
+</div>
+
+</body>
+</html>

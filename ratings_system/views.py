@@ -3,12 +3,30 @@
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.shortcuts import render
+from django.db import models
 
 from ratings_system.models import *
 from graticule.models import *
 from score.models import *
 
 import datetime
+
+def new_facility(request):
+    critlist = [
+        ('tf', 'Trans*-friendliness',
+         'Is this facility friendly for people who don\'t neatly fit into the gender-sex binary?'),
+        ('accs', 'Accessiility',
+         'How usable is this facility for disabled people?'),
+        ('maint', 'Maintenance',
+         'Is this facility clean, stocked with necessities if applicable, etc.?'),
+        ('overall', 'Overall',
+         'Overall, how is your experience of using this facility?')
+                ]
+    valid_values = range(1, 6)
+    return render(request, 'ratings_system/new_facility.html',
+                  {'typelist': Facility.LOC_TYPE_CHOICES,
+                   'critlist': critlist,
+                   'valid_values': valid_values,})
 
 # SECTION about/
 def about(request):
@@ -26,23 +44,38 @@ def facility_unary_view(request, gid, html_name):
 
 def facility_review_posted(request, gid):
     facility = Facility.objects.get(pk=gid)
-
-    review = Review()
-    review.pub_date = datetime.datetime.utcnow()
-    review.facility = facility
-    review.user = request.POST['user'] #probably need to do a lookup
-    review.title = request.POST['title']
     
-    review.karma = 0
+    error_message = ""
 
-    review.tf_vote = request.POST['tf']
-    review.accs_vote = request.POST['accs']
-    review.maint_vote = request.POST['maint']
-    review.overall_vote = request.POST['overall']
+    try:
+        tf_val = int(request.POST['tf'])
+        accs_val = int(request.POST['accs'])
+        maint_val = int(request.POST['maint'])
+        overall_val = int(request.POST['overall'])
+    except:
+        error_message = "Error: All votes must be between 1 and 5."
+    try:
+        thisuser = request.POST['user']
+        customuser = CustomUser.Objects.get(thisuser)
+    except:
+        error_message = "Username error, probably user not found."
+
+    review = Review.objects.create(
+        pub_date = datetime.datetime.utcnow(),
+        facility_id = facility,
+        user = customuser,
+        title = request.POST['title'],
+        karma = 0,
+        tf_vote = tf_val,
+        accs_vote = accs_val,
+        maint_vote = maint_val,
+        overall_vote = overall_val,)
+
+    facility.add_review(review)
 
     return render(
         request, 'ratings_system/facility_review_posted.html',
-        {'facility': facility})
+        {'facility': facility, 'error_message': error_message})
 
 def style(request, style_sheet_name):
     return render(
@@ -61,13 +94,16 @@ def facility_index(request, gid):
         {'facility': facility})
 
 def user_index(request, gid):
+
     return render(
         request, 'ratings_system/user_index.html',
         {'gid': gid})
 
 def index(request):
+    facility_list = Facility.objects.all()
     return render(
-        request, 'ratings_system/index.html',)
+        request, 'ratings_system/index.html',
+        {'facility_list': facility_list})
 
 # search/ (search_urls.py)
 

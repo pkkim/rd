@@ -1,0 +1,12 @@
+* Projecot
+
+
+
+* Geographic information
+
+Implement distance-finding in graticule 
+	
+* Ratings
+
+** Score
+** User

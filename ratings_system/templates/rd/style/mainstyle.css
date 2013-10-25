@@ -7,7 +7,7 @@ text-decoration: none
 #main {
 width: 75%;
 }
-#top-left {
+#top-right {
 padding: 5px 5px;
 position: absolute;
 top:0;
@@ -15,6 +15,15 @@ right:0;
 width: 25%;
 align: right;
 height: 50%;
+}
+#top-right-main {
+padding: 5px 5px;
+position: absolute;
+top:0;
+right:0;
+width: 35%;
+align: right;
+height: 70%;
 }
 #map-canvas {
 width: 100%;
@@ -75,4 +84,28 @@ background-color: #8080ff
 
 #reviews{
 float: left;
+}
+
+#rating {
+width: 50%;
+background-color:#8080ff;
+padding: 4px 4px 4px 4px;
+border-style: solid;
+border-width: 2px;
+margin: 4px 4px 4px 4px;
+}
+
+textarea, input {
+background: rgba(0, 0, 0, 0);
+border-color:#0000a0;
+border-width: 1px;
+}
+
+textarea {
+width: 100%;
+}
+
+#helptext {
+font-size: 80%;
+color:#000090;
 }

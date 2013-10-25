@@ -1,0 +1,58 @@
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script>
+google.maps.visualRefresh = true;
+
+var map;
+var facility_location
+function initialize() {
+  var map_center = new google.maps.LatLng(41.789567,
+-87.599657);
+  var mapOptions = {
+    zoom: 15,
+    center: map_center,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+function ratingToColor(rating):
+{
+switch(rating):
+case rating >= 1 && rating < 2:
+		return "FF0000";
+case rating >= 2 && rating < 3:
+		return "FFAA00";
+case rating >= 3 && rating < 4:
+		return "AAFF00";
+case rating >= 4 && rating < 5:
+		return "00FF00";
+}
+
+{% for location in facility_list %}
+new google.maps.Marker({
+  position: new google.maps.LatLng({{ location.coords.lat }},
+{{ location.coords.lon }}),
+  map: map,
+  title: " {{ location.loc_name }} ({{ location.loc_type }}) ",
+  icon: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=%20|(ratingToColor from rating here)|000000"
+})
+}
+{% endfor %}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<div id="top-right-main">
+
+
+{% if facility.id %}<a href="facility_new_review">Add a review!</a> &bull;{% endif %}
+{% if False %}<a href="account-path-in">Log in!{% else %}<a href="account-path-out">See my account{% endif %}</a><br /> My account link goes here
+{# Make the link say 'log in' or 'my account' based on whether user is logged in #}
+<div id="map-canvas"></div>
+
+Trans*-friendly: {{ facility.tf.score }}<br />
+Accessible: {{ facility.accs.score }}<br />
+Well-maintained: {{ facility.maint.score }}<br />
+Overall: {{ facility.overall.score }} 
+</div>

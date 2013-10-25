@@ -1,0 +1,65 @@
+<head>
+<title>Submit new facility</title>
+<link rel="stylesheet" type="text/css" href="/style/mainstyle.css">
+</head>
+<body>
+{% include "rd/sidebar.html" %}
+
+<div id="main">
+
+	<h1>Add facility</h1>
+	<h2>Add a new facility to WeeKnow.</h2>
+
+<form action="{# {% url 'new_facility_posted' %} #}" method="post">
+{% csrf_token %}
+
+<div id="rating">
+Short place name<br />
+<input type="text" name="loc_name">
+</div>
+
+{# This imports the list of facility types. But it should probably get it from somewhere outside the model! #}
+<div id="rating">
+Facility type
+<select name="loc_name">
+{% for type in typelist %}
+<option value="{{ type.0 }}">{{ type.1 }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div id="rating">
+Room number, or short description of location<br />
+<div id="helptext">E.g. E 133; Harper 2nd floor near west tower<br /></div>
+<input type="text" name="short_location">
+</div>
+
+{% for crit in critlist %}
+<div id="rating">
+{{ crit.1 }}<br />
+<div id="helptext">{{ crit.2 }}</div>
+{% for i in valid_values %}
+<input type="radio" name="{{ crit.0 }}" value="{{ i }}">{{ i }}</input>
+{% endfor %}
+</div>
+{% endfor %}
+
+<div id="rating">
+Where is the facility? What's the best way to get there?<br />
+<textarea name="loc_desc" width="50%" rows="5">Up the stairs, around the corner, and through the back.</textarea>
+</div>
+
+<div id="rating">
+Your username: 
+<input type="text" name="user" />
+</div>
+
+<input type="submit" value="Vote" /><br />
+<br />
+thanks!
+</form>
+
+</div>
+
+</body>
+</html>

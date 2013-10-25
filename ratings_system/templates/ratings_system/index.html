@@ -1,0 +1,16 @@
+<head>
+<title>Title</title>
+<link rel="stylesheet" type="text/css" href="/style/main.css">
+</head>
+<body>
+Welcome to Irving!
+{% include "rd/main_page_sidebar.html" %}
+
+<ul>
+{% for location in facility_list %}
+<li> <a href="{% url 'facility_new_review' location.id %}">{{ location.loc_name }} </a></li>
+{% endfor %}
+</ul>
+</body>
+</html>
+
